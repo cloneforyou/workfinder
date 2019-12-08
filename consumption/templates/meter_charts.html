@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+    <head>
+        <title>Meter - {{ meter.id }}</title>
+    </head>
+    <body>
+        <div id="container"></div>
+        <script src="https://code.highcharts.com/highcharts.src.js"></script>
+        <script>
+            var usageData = {{ usage }}
+            var dateArray = {{ dates|safe }}
+
+            seriesData = new Array;
+
+            for (let i=0; i < dateArray.length; i++){
+                seriesData.push([Date.parse(dateArray[i]), usageData[i]])
+            }            
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'spline',
+                    zoomType: 'x'
+                },
+                title: {
+                    text: 'Usage for Meter {{ meter.id }}'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        month: '%e. %b',
+                        year: '%b'
+                    },
+                    title: {
+                        text: 'Date'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Usage ({{ meter.unit }})'
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+                },
+
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                },
+                colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+                series: [{
+                    name: "Meter {{ meter.id }}",
+                    data: seriesData
+                }],
+            });
+        </script>
+    </body>
+</html>

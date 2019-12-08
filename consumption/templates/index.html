@@ -1,0 +1,35 @@
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+    {% for field in form.visible_fields %}
+        {{ field.label }}: {{ field }}
+        <br>
+    {% endfor %}
+    </div>    
+
+    <input type="submit" value="submit">
+</form>
+
+<h2>
+    Buildings
+</h2>
+<div>
+    <table>
+        <tr>
+            <th>Building Name</th>
+            <th>Meters</th>
+        </tr>
+        {% for building in buildings %}
+        <tr>
+            <td>{{ building.name }}</td>
+            <td>
+                {% for meter in building.meter.all %}
+                <a href="{% url 'meter_graph' meter.id  %}">{{ meter.id }}</a>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+

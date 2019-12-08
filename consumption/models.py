@@ -5,10 +5,13 @@ class Hotel(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
 
+    class Meta:
+        ordering = ['name']
+
 
 class Meter(models.Model):
     WATER = 'water'
-    NATURAL_GAS = 'natural_gas'
+    NATURAL_GAS = 'natural gas'
     ELECTRICITY = 'electricity'
 
     FUEL_CHOICES = [
@@ -30,8 +33,14 @@ class Meter(models.Model):
     unit = models.CharField(max_length=3, choices=UNIT)
     hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='meter')
 
+    class Meta:
+        ordering = ['id']
+
 
 class HalfHourly(models.Model):
     consumption = models.FloatField(default=0)
     reading_date_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     meter = models.ForeignKey('Meter', on_delete=models.CASCADE, related_name='halfhourly')
+
+    class Meta:
+        ordering = ['reading_date_time']        

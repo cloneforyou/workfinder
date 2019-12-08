@@ -5,12 +5,12 @@ from .models import Hotel, Meter, HalfHourly
 
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'name')
 
 
 @admin.register(Meter)
 class MeterAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'fuel', 'unit')
 
 
 @admin.register(HalfHourly)
