@@ -8,6 +8,9 @@ class Hotel(models.Model):
     class Meta:
         ordering = ['name']
 
+    def __str__(self):
+        return '{}'.format(self.name)
+
 
 class Meter(models.Model):
     WATER = 'water'
@@ -23,18 +26,21 @@ class Meter(models.Model):
     M3 = 'm3'
     KWH = 'kWh'
 
-    UNIT = [
+    UNIT_CHOICES = [
         (M3, 'm3'),
         (KWH, 'kWh'),
     ]
 
     id = models.AutoField(primary_key=True)
     fuel = models.CharField(max_length=16, choices=FUEL_CHOICES)
-    unit = models.CharField(max_length=3, choices=UNIT)
+    unit = models.CharField(max_length=3, choices=UNIT_CHOICES)
     hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='meter')
 
     class Meta:
         ordering = ['id']
+
+    def __str__(self):
+        return '{}-{}'.format(self.id, self.fuel)
 
 
 class HalfHourly(models.Model):
@@ -43,4 +49,7 @@ class HalfHourly(models.Model):
     meter = models.ForeignKey('Meter', on_delete=models.CASCADE, related_name='halfhourly')
 
     class Meta:
-        ordering = ['reading_date_time']        
+        ordering = ['reading_date_time']
+
+    def __str__(self):
+        return '{}'.format(self.meter.fuel)
